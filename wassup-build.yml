@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: ImageStream
+metadata:
+  labels:
+    app: wassup
+  name: wassup
+spec: {}
+---
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+    labels:
+      app: "wassup"
+    name: "wassup"
+  spec:
+    output:
+      to:
+        kind: "ImageStreamTag"
+        name: "wassup:latest"
+    resources: {}
+    source:
+      git:
+        ref: master
+        uri: https://github.com/atgreen/wassup.git
+      contextDir:
+      type: Git
+    strategy:
+      dockerStrategy:
+        dockerfilePath: Dockerfile
+        from:
+          kind: DockerImage
+          name: ibmcom/websphere-traditional:profile
+        forcePull: true
+      type: Docker
+kind: List
+metadata: {}
